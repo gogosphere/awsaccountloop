@@ -2,7 +2,6 @@ package awsaccountloop
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -15,25 +14,25 @@ import (
 
 var (
 	credentialsPath = os.Getenv("HOME") + "/.aws/credentials"
-	accountcreds    = make(map[*ec2.EC2]string)
+	Accountcreds    = make(map[*ec2.EC2]string)
 	r               = readFile(credentialsPath)
 	p               = pullAccounts(r)
 )
 
 // AWSAccount holding the account number and the svc token here
 type AWSAccount struct {
-	accountcreds    map[string]*ec2.EC2
+	Accountcreds    map[string]*ec2.EC2
 	accountnames    []string
 	credentialsPath string
 }
 
-func awsaccountloop() {
+func New() *AWSAccount {
 	var awsloop = &AWSAccount{
 		credentialsPath: credentialsPath,
 		accountnames:    p,
-		accountcreds:    assignToken(),
+		Accountcreds:    assignToken(),
 	}
-	fmt.Println(awsloop.accountcreds)
+	return awsloop
 }
 
 func readFile(cf string) []string {
@@ -62,14 +61,14 @@ func pullAccounts(pa []string) []string {
 	return a
 }
 func assignToken() map[string]*ec2.EC2 {
-	accountcreds := make(map[string]*ec2.EC2)
+	Accountcreds := make(map[string]*ec2.EC2)
 	for _, v := range p {
 		credentialObject := credentials.NewSharedCredentials(credentialsPath, v)
 		svc := ec2.New(session.New(aws.NewConfig().WithRegion("us-east-1").
 			WithMaxRetries(2).WithCredentials(credentialObject)))
-		accountcreds[v] = svc
+		Accountcreds[v] = svc
 	}
-	return accountcreds
+	return Accountcreds
 }
 
 func er(e error) {
