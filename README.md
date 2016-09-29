@@ -17,9 +17,9 @@ func main() {
 	a := awsaccountloop.New()
 
 	for accountname, ec2object := range a.Accountcreds {
-		a := &ec2.DescribeInstancesInput{}
+		parameters := &ec2.DescribeInstancesInput{}
 
-		ec2objectassigned, _ := ec2object.DescribeInstances(a)
+		ec2objectassigned, _ := ec2object.DescribeInstances(parameters)
 
 		for _, vv := range ec2objectassigned.Reservations {
 			fmt.Println(accountname, *vv.Instances[0].InstanceId)
