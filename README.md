@@ -1,5 +1,7 @@
-# Example
-
+#  What and why
+I have many accounts to deal with and  its a pain either checking each one, or putting some sort of a loop  in my code.  This makes doing an all account query to the AWS API very easy.
+# Example 
+You can put the code in a main.go file, and ```go get -d``` to pull the library down and  you should see a list of all instances in all your accounts.  (accounts are defined by [whatever] in your ~/.aws/credentials file.
 ```
 package main
 
